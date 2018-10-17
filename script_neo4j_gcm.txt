@@ -1,0 +1,14 @@
+bash create_headers.txt &&
+echo "HEADERS CREATED" && 
+export PGPASSWORD='mypassword'; psql -U geco -h localhost -d gmql_metadata_andrea2 -f create_nodes_relationships.sql &&
+echo "ADDITIONAL CONVERSION FOR PAIRS DONE" &&
+iconv -f utf-8 -t ascii//TRANSLIT import/gcm_entities/pairs_pre.csv > import/gcm_entities/pairs.csv &&
+echo "FILES FROM DB CREATED" &&
+rm -rf data/databases/graph.db &&
+echo "DELETED OLD GRAPH" &&
+bin/neo4j-admin import --nodes "import/gcm_entities/item_header.csv,import/gcm_entities/item.csv" --nodes "import/gcm_entities/experiment_type_header.csv,import/gcm_entities/experiment_type.csv" --nodes "import/gcm_entities/dataset_header.csv,import/gcm_entities/dataset.csv" --nodes "import/gcm_entities/replicate_header.csv,import/gcm_entities/replicate.csv" --nodes "import/gcm_entities/case_header.csv,import/gcm_entities/case.csv" --nodes "import/gcm_entities/project_header.csv,import/gcm_entities/project.csv" --nodes "import/gcm_entities/biosample_header.csv,import/gcm_entities/biosample.csv" --nodes "import/gcm_entities/donor_header.csv,import/gcm_entities/donor.csv" --nodes "import/gcm_entities/vocabulary_header.csv,import/gcm_entities/vocabulary.csv" --nodes "import/gcm_entities/ontology_header.csv,import/gcm_entities/ontology.csv" --nodes "import/gcm_entities/synonym_header.csv,import/gcm_entities/synonym.csv" --nodes "import/gcm_entities/reference_header.csv,import/gcm_entities/reference.csv" --relationships "import/gcm_entities/item2experiment_header.csv,import/gcm_entities/item2experiment.csv" --relationships "import/gcm_entities/item2dataset_header.csv,import/gcm_entities/item2dataset.csv" --relationships "import/gcm_entities/item2replicate_header.csv,import/gcm_entities/item2replicate.csv" --relationships "import/gcm_entities/item2case_header.csv,import/gcm_entities/item2case.csv" --relationships "import/gcm_entities/case2project_header.csv,import/gcm_entities/case2project.csv" --relationships "import/gcm_entities/replicate2biosample_header.csv,import/gcm_entities/replicate2biosample.csv" --relationships "import/gcm_entities/biosample2donor_header.csv,import/gcm_entities/biosample2donor.csv" --relationships "import/gcm_entities/has_tid_header.csv,import/gcm_entities/has_tid.csv" --relationships "import/gcm_entities/from_ontology_header.csv,import/gcm_entities/from_ontology.csv" --relationships "import/gcm_entities/has_synonym_header.csv,import/gcm_entities/has_synonym.csv" --relationships "import/gcm_entities/has_reference_header.csv,import/gcm_entities/has_reference.csv" --delimiter "+" --ignore-missing-nodes &&
+echo "CREATED NEW GRAPH \(without PAIRS\)" &&
+bin/neo4j start &&
+echo "STARTED NEO$J"
+python pairs_into_graph.py &&
+echo "INSERTED PAIRS"
