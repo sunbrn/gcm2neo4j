@@ -1,15 +1,21 @@
 from neo4jrestclient.client import GraphDatabase
 
+import sys
+
 import csv
 
 from datetime import datetime
 
-graph = GraphDatabase("http://neo4j:yellow@geco.deib.polimi.it:17474/db/data/")
+graph = GraphDatabase("http://neo4j:yellow@geco.deib.polimi.it:7474/db/data/")
 tx = graph.transaction(for_query=True)
 
 i=0
 
-with open('import/gcm_entities/pairs.csv', 'r') as csvfile:
+neo_home = sys.argv[1]
+
+file_path = neo_home + 'import/gcm_entities/pairs.csv'
+
+with open(file_path, 'r') as csvfile:
     csvreader = csv.reader(csvfile, delimiter='\t')
 
     cur = next(csvreader)
@@ -49,4 +55,5 @@ with open('import/gcm_entities/pairs.csv', 'r') as csvfile:
     query_rel = "MATCH (i:Item),(p:PairsOfItem) WHERE replace(i.item_id,'i','') = replace(p.pair_id,'pa','')  CREATE (i)-[r:HasPairs]->(p)"
     tx.append(query_rel)
     tx.commit()
+
 
