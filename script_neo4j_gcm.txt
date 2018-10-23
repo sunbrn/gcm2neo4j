@@ -24,4 +24,7 @@ $1bin/neo4j start &&
 echo "STARTED NEO$J"
 #ADD PAIR NODES
 python pairs_into_graph_tx.py $1 &&
-echo "INSERTED PAIRS"
+echo "INSERTED PAIRS" &&
+#REPLACE USELESS RELATIONSHIPS
+python replace_relationships.py &&
+echo "REPLACED RELATIONSHIPS"
