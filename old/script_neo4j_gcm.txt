@@ -10,5 +10,5 @@ bin/neo4j-admin import --nodes "import/gcm_entities/item_header.csv,import/gcm_e
 echo "CREATED NEW GRAPH \(without PAIRS\)" &&
 bin/neo4j start &&
 echo "STARTED NEO$J"
-python pairs_into_graph_tx.py &&
+python pairs_into_graph.py &&
 echo "INSERTED PAIRS"
