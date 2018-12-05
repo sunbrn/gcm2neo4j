@@ -1,5 +1,7 @@
 --------ITEM
 \copy (SELECT 'i'||item_id as item_id,source_id,size,date,checksum,platform,pipeline,source_url,regexp_replace(local_url, E'\\n','') as local_url,'Item' as label FROM public.item) TO '../neo4j-community-3.4.1/import/gcm_entities/item.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (source_id,date,checksum,platform,pipeline,source_url,local_url));
+--------ITEMWITH contentType
+--------\copy (SELECT 'i'||item_id as item_id,source_id,size,date,checksum,content_type,platform,pipeline,source_url,regexp_replace(local_url, E'\\n','') as local_url,'Item' as label FROM public.item) TO '../neo4j-community-3.4.1/import/gcm_entities/item.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (source_id,date,checksum,content_type,platform,pipeline,source_url,local_url));
 --------ITEM2EXPERIMENT
 \copy (SELECT 'i'||item_id as item_id,'e'||experiment_type_id as experiment_type_id,'Item2ExperimentType' as label FROM public.item) TO '../neo4j-community-3.4.1/import/gcm_entities/item2experiment.csv' WITH (DELIMITER '+', FORMAT CSV);
 --------ITEM2DATASET
@@ -31,21 +33,21 @@
 --------RELATION_HAS_TID
 \copy (SELECT 'i'||item_id as id,'platform' as onto_attribute,'tid'||platform_tid as tid,'HasTid' as label FROM public.item where platform_tid is not null UNION ALL SELECT 'do'||donor_id as id,'species' as onto_attribute,'tid'||species_tid as tid,'HasTid' as label FROM public.donor where species_tid is not null  UNION ALL SELECT 'do'||donor_id as id,'ethnicity' as onto_attribute,'tid'||ethnicity_tid as tid,'HasTid' as label FROM public.donor where ethnicity_tid is not null  UNION ALL SELECT 'da'||dataset_id as id,'annotation' as onto_attribute,'tid'||annotation_tid as tid,'HasTid' as label FROM public.dataset where annotation_tid is not null UNION ALL SELECT 'b'||biosample_id as id,'tissue' as onto_attribute,'tid'||tissue_tid as tid,'HasTid' as label FROM public.biosample where tissue_tid is not null  UNION ALL SELECT 'b'||biosample_id as id,'cell_line' as onto_attribute,'tid'||cell_line_tid as tid,'HasTid' as label FROM public.biosample where cell_line_tid is not null UNION ALL SELECT 'b'||biosample_id as id,'disease' as onto_attribute,'tid'||disease_tid as tid,'HasTid' as label FROM public.biosample where disease_tid is not null  UNION ALL SELECT 'e'||experiment_type_id as id,'technique' as onto_attribute,'tid'||technique_tid as tid,'HasTid' as label FROM public.experiment_type where technique_tid is not null  UNION ALL SELECT 'e'||experiment_type_id as id,'feature' as onto_attribute,'tid'||feature_tid as tid,'HasTid' as label FROM public.experiment_type where feature_tid is not null  UNION ALL SELECT 'e'||experiment_type_id as id,'target' as onto_attribute,'tid'||target_tid as tid,'HasTid' as label FROM public.experiment_type where target_tid is not null) TO '../neo4j-community-3.4.1/import/gcm_entities/has_tid.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (onto_attribute));
 --------VOCABULARY
-\copy (SELECT 'tid'||tid as tid,source,code,pref_label,regexp_replace(regexp_replace(regexp_replace(description, E'\\n\\n',' '), E'\\n',' '), E'\\s\\n',' ') as description,iri, 'Vocabulary' as label FROM public.vocabulary) TO '../neo4j-community-3.4.1/import/gcm_entities/vocabulary.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (source,code,pref_label,description,iri));
+\copy (SELECT 'tid'||tid as tid,source,code,pref_label,regexp_replace(regexp_replace(regexp_replace(regexp_replace(regexp_replace(description, E'\\n\\n',' '), E'\\n',' '), E'\\s\\n',' '), E'.\\n','.'), E'^\\s','') as description,iri, 'Vocabulary' as label FROM public.vocabulary) TO '../neo4j-community-3.4.1/import/gcm_entities/vocabulary.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (source,code,pref_label,description,iri));
 -------RELATION_FROM_ONTOLOGY
 \copy (SELECT 'tid'||tid as tid,source,'FromOntology' as label FROM public.vocabulary) TO '../neo4j-community-3.4.1/import/gcm_entities/from_ontology.csv' WITH (DELIMITER '+', FORMAT CSV);
 -------ONTOLOGY
 \copy (SELECT source,title,description,url,'Ontology' as label FROM public.ontology) TO '../neo4j-community-3.4.1/import/gcm_entities/ontology.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (title,description,url));
 -------RELATION_HAS_SYNONYM
-\copy (SELECT 's'||synonym_id as synonym_id,'tid'||tid as tid,'HasSynonym' as label FROM public.synonym) TO '../neo4j-community-3.4.1/import/gcm_entities/has_synonym.csv' WITH (DELIMITER '+', FORMAT CSV);
+\copy (SELECT 'tid'||tid as tid,'s'||id as synonym_id,'HasSynonym' as label FROM public.synonym) TO '../neo4j-community-3.4.1/import/gcm_entities/has_synonym.csv' WITH (DELIMITER '+', FORMAT CSV);
 -------SYNONYM
-\copy (SELECT 's'||synonym_id as synonym_id,label,'Synonym' as label FROM public.synonym) TO '../neo4j-community-3.4.1/import/gcm_entities/synonym.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (label));
+\copy (SELECT 's'||id as synonym_id,label,'Synonym' as label FROM public.synonym) TO '../neo4j-community-3.4.1/import/gcm_entities/synonym.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (label));
 -------RELATION_HAS_REFERENCE
-\copy (SELECT 'x'||reference_id as reference_id,'tid'||tid as tid,'HasXRef' as label FROM public.reference) TO '../neo4j-community-3.4.1/import/gcm_entities/has_reference.csv' WITH (DELIMITER '+', FORMAT CSV);
+\copy (SELECT 'tid'||tid as tid,'x'||id as reference_id,'HasXRef' as label FROM public.reference) TO '../neo4j-community-3.4.1/import/gcm_entities/has_reference.csv' WITH (DELIMITER '+', FORMAT CSV);
 -------REFERENCE
-\copy (SELECT 'x'||reference_id as reference_id,source,code,'XRef' as label FROM public.reference) TO '../neo4j-community-3.4.1/import/gcm_entities/reference.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (source,code));
+\copy (SELECT 'x'||id as reference_id,source,code,'XRef' as label FROM public.reference) TO '../neo4j-community-3.4.1/import/gcm_entities/reference.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (source,code));
 -------RELATION_HAS_RELATIONSHIP
-\copy (select 'tid'||tid_parent as tid_parent,'tid'||tid_child as tid_child,rel_type,'HasRelationship' as label from public.relationship) TO '../neo4j-community-3.4.1/import/gcm_entities/has_relationship.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (rel_type));
+\copy (select 'tid'||tid_child as tid_child,'tid'||tid_parent as tid_parent,rel_type,'HasRelationship' as label from public.relationship) TO '../neo4j-community-3.4.1/import/gcm_entities/has_relationship.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (rel_type));
 ------PAIRS
 \copy (select item_id,regexp_replace(key, E'@','_') as key, value from public.pair order by item_id,key,value) TO '../neo4j-community-3.4.1/import/gcm_entities/pairs_pre.csv'
 

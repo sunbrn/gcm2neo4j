@@ -1,3 +1,4 @@
+echo $1
 #CREATE HEADERS FOR NEO4J NODES AND RELATIONSHIPS IMPORT
 bash create_headers.txt $1 &&
 echo "HEADERS CREATED" &&
@@ -5,7 +6,7 @@ echo "HEADERS CREATED" &&
 neo_home=$1
 sed -i "s~\$1~$neo_home~" create_nodes_relationships.sql &&
 #LAUNCH COPY STATEMENTS IN SQL
-export PGPASSWORD='geco78'; psql -U geco -h localhost -d gmql_metadata_andrea2 -f create_nodes_relationships.sql &&
+export PGPASSWORD='geco78'; psql -U geco -h localhost -d gmql_metadata_andrea -f create_nodes_relationships.sql &&
 echo "EXPORTED NODES AND RELATIONSHIPS" &&
 #CONVERT f to FALSE and t to TRUE
 sed -i 's/+f+/+false+/g' $1import/gcm_entities/biosample.csv &&
@@ -14,8 +15,8 @@ sed -i 's/+f+/+false+/g' $1import/gcm_entities/dataset.csv &&
 sed -i 's/+t+/+true+/g' $1import/gcm_entities/dataset.csv &&
 echo "CONVERTED BOOLEAN VALUES" &&
 #CONVERT PAIRS (CLEAN-NON UNICODE)
-iconv -f utf-8 -t ascii//TRANSLIT $1import/gcm_entities/pairs_pre.csv > $1import/gcm_entities/pairs.csv &&
-echo "ADDITIONAL CONVERSION FOR PAIRS DONE" &&
+#iconv -f utf-8 -t ascii//TRANSLIT $1import/gcm_entities/pairs_pre.csv > $1import/gcm_entities/pairs.csv &&
+#echo "ADDITIONAL CONVERSION FOR PAIRS DONE" &&
 #REMOVE OLD GRAPH
 rm -rf $1data/databases/graph.db &&
 echo "DELETED OLD GRAPH" &&
@@ -27,10 +28,11 @@ $1bin/neo4j-admin import --nodes "$1import/gcm_entities/item_header.csv,$1import
 echo "CREATED NEW GRAPH \(without PAIRS\)" &&
 #START NEO4J SERVER
 $1bin/neo4j start &&
-echo "STARTED NEO$J"
+echo "STARTED NEO4J"
 #ADD PAIR NODES
-python pairs_into_graph_tx.py $1 &&
-echo "INSERTED PAIRS" &&
+#python pairs_into_graph_tx.py $1 &&
+#echo "INSERTED PAIRS" &&
 #REPLACE USELESS RELATIONSHIPS
+sleep 30
 python replace_relationships.py &&
 echo "REPLACED RELATIONSHIPS"
