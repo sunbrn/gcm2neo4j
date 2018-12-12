@@ -24,3 +24,5 @@ echo "synonym_id:ID+label+:LABEL" | tee $1import/gcm_entities/synonym_header.csv
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/has_reference_header.csv;
 echo "reference_id:ID+source+code+:LABEL" | tee $1import/gcm_entities/reference_header.csv;
 echo ":START_ID+:END_ID+rel_type+:TYPE" | tee $1import/gcm_entities/has_relationship_header.csv;
+echo ":pair_id:ID+key+value+:TYPE" | tee $1import/gcm_entities/pair_header.csv;
+echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2pair_header.csv;
