@@ -5,7 +5,7 @@ echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2experiment_heade
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2dataset_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2case_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2replicate_header.csv;
-echo "experiment_type_id:ID+technique+feature+target+antibody+:LABEL " | tee $1import/gcm_entities/experiment_type_header.csv;
+echo "experiment_type_id:ID+technique+feature+target+antibody+:LABEL" | tee $1import/gcm_entities/experiment_type_header.csv;
 echo "dataset_id:ID+name+data_type+format+assembly+is_ann:boolean+annotation+:LABEL" | tee $1import/gcm_entities/dataset_header.csv;
 echo "case_study_id:ID+source_id+source_site+external_ref+:LABEL" | tee $1import/gcm_entities/case_header.csv;
 echo "replicate_id:ID+source_id+bio_replicate_num:int+tech_replicate_num:int+:LABEL" | tee $1import/gcm_entities/replicate_header.csv;
@@ -24,5 +24,5 @@ echo "synonym_id:ID+label+:LABEL" | tee $1import/gcm_entities/synonym_header.csv
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/has_reference_header.csv;
 echo "reference_id:ID+source+code+:LABEL" | tee $1import/gcm_entities/reference_header.csv;
 echo ":START_ID+:END_ID+rel_type+:TYPE" | tee $1import/gcm_entities/has_relationship_header.csv;
-echo ":pair_id:ID+key+value+:TYPE" | tee $1import/gcm_entities/pair_header.csv;
+echo "pair_id:ID+key+value+:LABEL" | tee $1import/gcm_entities/pair_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2pair_header.csv;

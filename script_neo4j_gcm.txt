@@ -1,37 +1,51 @@
+#this script should be run with:
+#bash script_neo4j_gcm.txt <neo4j_home> <postgresql_db_password> <neo4j_db_password> >&1 | tee run_logs/output_run_$(date -d "today" +"%Y%m%d%H%M").log
+
+#START
+echo "##############################################################################" $(date -u) "RUN STARTED" &&
 #CREATE HEADERS FOR NEO4J NODES AND RELATIONSHIPS IMPORT
 bash create_headers.txt $1 &&
-echo "HEADERS CREATED" &&
+echo "##############################################################################" $(date -u) "HEADERS CREATED" &&
 #PREPARE VARIABLE FOR PSQL
 neo_home=$1
-echo "PREPARED VARIABLE FOR PSQL" &&
+echo "##############################################################################" $(date -u) "PREPARED VARIABLE FOR PSQL" &&
 sed -i "s~\$1~$neo_home~" create_nodes_relationships.sql &&
 #LAUNCH COPY STATEMENTS IN SQL
-export PGPASSWORD='geco78'; psql -U geco -h localhost -d gmql_metadata_andrea2 -f create_nodes_relationships.sql &&
-echo "EXPORTED NODES AND RELATIONSHIPS" &&
+export PGPASSWORD=$2; psql -U geco -h localhost -d gmql_metadata_andrea2 -f create_nodes_relationships.sql &&
+echo "##############################################################################" $(date -u) "EXPORTED NODES AND RELATIONSHIPS" &&
 #CONVERT f to FALSE and t to TRUE
 sed -i 's/+f+/+false+/g' $1import/gcm_entities/biosample.csv &&
 sed -i 's/+t+/+true+/g' $1import/gcm_entities/biosample.csv &&
 sed -i 's/+f+/+false+/g' $1import/gcm_entities/dataset.csv &&
 sed -i 's/+t+/+true+/g' $1import/gcm_entities/dataset.csv &&
-echo "CONVERTED BOOLEAN VALUES" &&
+echo "##############################################################################" $(date -u) "CONVERTED BOOLEAN VALUES" &&
 #CONVERT PAIRS (CLEAN-NON UNICODE)
 iconv -f utf-8 -t ascii//TRANSLIT $1import/gcm_entities/pair_pre.csv > $1import/gcm_entities/pair.csv &&
-echo "ADDITIONAL CONVERSION FOR PAIRS DONE" &&
+echo "##############################################################################" $(date -u) "ADDITIONAL CONVERSION FOR PAIRS DONE" &&
 #REMOVE OLD GRAPH
 rm -rf $1data/databases/graph.db &&
-echo "DELETED OLD GRAPH" &&
+echo "##############################################################################" $(date -u) "DELETED OLD GRAPH" &&
 #STOP NEO4J SERVER IF RUNNING
 $1bin/neo4j stop &&
-echo "STOPPED NEO4J IN CASE IT WAS RUNNING"
+echo "##############################################################################" $(date -u) "STOPPED NEO4J IN CASE IT WAS RUNNING"
 #LAUNCH NEO4J IMPORT
 $1bin/neo4j-admin import --nodes "$1import/gcm_entities/item_header.csv,$1import/gcm_entities/item.csv" --nodes "$1import/gcm_entities/experiment_type_header.csv,$1import/gcm_entities/experiment_type.csv" --nodes "$1import/gcm_entities/dataset_header.csv,$1import/gcm_entities/dataset.csv" --nodes "$1import/gcm_entities/replicate_header.csv,$1import/gcm_entities/replicate.csv" --nodes "$1import/gcm_entities/case_header.csv,$1import/gcm_entities/case.csv" --nodes "$1import/gcm_entities/project_header.csv,$1import/gcm_entities/project.csv" --nodes "$1import/gcm_entities/biosample_header.csv,$1import/gcm_entities/biosample.csv" --nodes "$1import/gcm_entities/donor_header.csv,$1import/gcm_entities/donor.csv" --nodes "$1import/gcm_entities/vocabulary_header.csv,$1import/gcm_entities/vocabulary.csv" --nodes "$1import/gcm_entities/ontology_header.csv,$1import/gcm_entities/ontology.csv" --nodes "$1import/gcm_entities/synonym_header.csv,$1import/gcm_entities/synonym.csv" --nodes "$1import/gcm_entities/reference_header.csv,$1import/gcm_entities/reference.csv" --relationships "$1import/gcm_entities/item2experiment_header.csv,$1import/gcm_entities/item2experiment.csv" --relationships "$1import/gcm_entities/item2dataset_header.csv,$1import/gcm_entities/item2dataset.csv" --relationships "$1import/gcm_entities/item2replicate_header.csv,$1import/gcm_entities/item2replicate.csv" --relationships "$1import/gcm_entities/item2case_header.csv,$1import/gcm_entities/item2case.csv" --relationships "$1import/gcm_entities/case2project_header.csv,$1import/gcm_entities/case2project.csv" --relationships "$1import/gcm_entities/replicate2biosample_header.csv,$1import/gcm_entities/replicate2biosample.csv" --relationships "$1import/gcm_entities/biosample2donor_header.csv,$1import/gcm_entities/biosample2donor.csv" --relationships "$1import/gcm_entities/has_tid_header.csv,$1import/gcm_entities/has_tid.csv" --relationships "$1import/gcm_entities/from_ontology_header.csv,$1import/gcm_entities/from_ontology.csv" --relationships "$1import/gcm_entities/has_synonym_header.csv,$1import/gcm_entities/has_synonym.csv" --relationships "$1import/gcm_entities/has_reference_header.csv,$1import/gcm_entities/has_reference.csv" --nodes "$1import/gcm_entities/pair_header.csv,$1import/gcm_entities/pair.csv" --relationships "$1import/gcm_entities/item2pair_header.csv,$1import/gcm_entities/item2pair.csv" --delimiter "+" --ignore-missing-nodes &&
-echo "CREATED NEW GRAPH" &&
+echo "##############################################################################" $(date -u) "CREATED NEW GRAPH" &&
 #START NEO4J SERVER
 $1bin/neo4j start &&
-echo "STARTED NEO4J"
+echo "##############################################################################" $(date -u) "STARTED NEO4J"
+#WAIT FOR COMPLETE START
+sleep 30s &&
+echo "##############################################################################" $(date -u) "RE-START COMPLETED" &&
 #####ADD PAIR NODES
 #####python pairs_into_graph_tx.py $1 &&
 #####echo "INSERTED PAIRS" &&
 #REPLACE USELESS RELATIONSHIPS
-python replace_relationships.py &&
-echo "REPLACED RELATIONSHIPS"
+python replace_relationships.py $3 &&
+echo "##############################################################################" $(date -u) "REPLACED RELATIONSHIPS" &&
+#CREATE INDEXES
+python create_indexes.py $3 &&
+echo "##############################################################################" $(date -u) "CREATED INDEXES"
+#WAIT FOR PAIR INDEX POPULATION
+sleep 2m &&
+echo "##############################################################################" $(date -u) "INDEXES GENERATION COMPLETE" 

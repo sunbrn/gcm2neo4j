@@ -6,7 +6,8 @@ import csv
 
 from datetime import datetime
 
-graph = GraphDatabase("http://neo4j:yellow@geco.deib.polimi.it:7474/db/data/")
+connection_string = "http://neo4j:"+ sys.argv[1] + "@geco.deib.polimi.it:7474/db/data/"
+graph = GraphDatabase(connection_string)
 tx = graph.transaction(for_query=True)
 
 i=0
