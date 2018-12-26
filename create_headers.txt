@@ -1,18 +1,18 @@
-echo "item_id:ID+source_id+size:int+date+checksum+platform+pipeline+source_url+local_url+:LABEL" | tee $1import/gcm_entities/item_header.csv;
-#####ITEM next
-#####echo "item_id:ID+source_id+size:int+date+checksum+content_type+platform+pipeline+source_url+local_url+:LABEL" | tee $1import/gcm_entities/item_header.csv;
+###old item
+#####echo "item_id:ID+source_id+size:int+date+checksum+platform+pipeline+source_url+local_url+:LABEL" | tee $1import/gcm_entities/item_header.csv;
+echo "item_id:ID+source_id+size:int+date+checksum+content_type+platform+pipeline+source_url+local_url+:LABEL" | tee $1import/gcm_entities/item_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2experiment_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2dataset_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2case_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2replicate_header.csv;
 echo "experiment_type_id:ID+technique+feature+target+antibody+:LABEL" | tee $1import/gcm_entities/experiment_type_header.csv;
-echo "dataset_id:ID+name+data_type+format+assembly+is_ann:boolean+annotation+:LABEL" | tee $1import/gcm_entities/dataset_header.csv;
+echo "dataset_id:ID+name+data_type+format+assembly+is_ann:boolean+:LABEL" | tee $1import/gcm_entities/dataset_header.csv;
 echo "case_study_id:ID+source_id+source_site+external_ref+:LABEL" | tee $1import/gcm_entities/case_header.csv;
 echo "replicate_id:ID+source_id+bio_replicate_num:int+tech_replicate_num:int+:LABEL" | tee $1import/gcm_entities/replicate_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/case2project_header.csv;
 echo "project_id:ID+project_name+program_name+:LABEL" | tee $1import/gcm_entities/project_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/replicate2biosample_header.csv;
-echo "biosample_id:ID+source_id+type+tissue+cell_line+is_healthy:boolean+disease+:LABEL" | tee $1import/gcm_entities/biosample_header.csv;
+echo "biosample_id:ID+source_id+type+tissue+cell+is_healthy:boolean+disease+:LABEL" | tee $1import/gcm_entities/biosample_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/biosample2donor_header.csv;
 echo "donor_id:ID+source_id+species+age:int+gender+ethnicity+:LABEL" | tee $1import/gcm_entities/donor_header.csv;
 echo ":START_ID+onto_attribute+:END_ID+:TYPE" | tee $1import/gcm_entities/has_tid_header.csv;

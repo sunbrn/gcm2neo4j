@@ -1,0 +1,48 @@
+############################################################################## Mon Dec 17 12:03:02 UTC 2018 RUN STARTED
+item_id:ID+source_id+size:int+date+checksum+platform+pipeline+source_url+local_url+:LABEL
+:START_ID+:END_ID+:TYPE
+:START_ID+:END_ID+:TYPE
+:START_ID+:END_ID+:TYPE
+:START_ID+:END_ID+:TYPE
+experiment_type_id:ID+technique+feature+target+antibody+:LABEL
+dataset_id:ID+name+data_type+format+assembly+is_ann:boolean+annotation+:LABEL
+case_study_id:ID+source_id+source_site+external_ref+:LABEL
+replicate_id:ID+source_id+bio_replicate_num:int+tech_replicate_num:int+:LABEL
+:START_ID+:END_ID+:TYPE
+project_id:ID+project_name+program_name+:LABEL
+:START_ID+:END_ID+:TYPE
+biosample_id:ID+source_id+type+tissue+cell_line+is_healthy:boolean+disease+:LABEL
+:START_ID+:END_ID+:TYPE
+donor_id:ID+source_id+species+age:int+gender+ethnicity+:LABEL
+:START_ID+onto_attribute+:END_ID+:TYPE
+tid:ID+source+code+pref_label+description+iri+:LABEL
+:START_ID+:END_ID+:TYPE
+source:ID+title+description+url+:LABEL
+:START_ID+:END_ID+:TYPE
+synonym_id:ID+label+:LABEL
+:START_ID+:END_ID+:TYPE
+reference_id:ID+source+code+:LABEL
+:START_ID+:END_ID+rel_type+:TYPE
+pair_id:ID+key+value+:LABEL
+:START_ID+:END_ID+:TYPE
+############################################################################## Mon Dec 17 12:03:03 UTC 2018 HEADERS CREATED
+############################################################################## Mon Dec 17 12:03:03 UTC 2018 PREPARED VARIABLE FOR PSQL
+COPY 120703
+COPY 120703
+COPY 120703
+COPY 131557
+COPY 836
+COPY 14
+COPY 14768
+COPY 37
+COPY 28860
+COPY 25064
+COPY 102826
+COPY 4143
+COPY 4143
+COPY 25
+COPY 16249
+COPY 14571
+COPY 9522
+COPY 9522
+COPY 1001
