@@ -1,5 +1,8 @@
 #this script should be run with:
 #bash script_neo4j_gcm.txt <neo4j_home> <postgresql_db_password> <neo4j_db_password> >&1 | tee run_logs/output_run_$(date -d "today" +"%Y%m%d%H%M").log
+#bash script_neo4j_gcm.txt ../neo4j-community-3.4.1/ <postgresql_db_password> <neo4j_db_password> >&1 | tee run_logs/output_run_$(date -d "today" +"%Y%m%d%H%M").log
+#conda activate neo4jpython
+#tmux a
 
 #START
 echo "##############################################################################" $(date -u) "RUN STARTED" &&

@@ -1,0 +1,66 @@
+############################################################################## Fri Dec 28 19:41:15 UTC 2018 RUN STARTED
+item_id:ID+source_id+size:int+date+checksum+content_type+platform+pipeline+source_url+local_url+:LABEL
+:START_ID+:END_ID+:TYPE
+:START_ID+:END_ID+:TYPE
+:START_ID+:END_ID+:TYPE
+:START_ID+:END_ID+:TYPE
+experiment_type_id:ID+technique+feature+target+antibody+:LABEL
+dataset_id:ID+name+data_type+format+assembly+is_ann:boolean+source+:LABEL
+case_id:ID+source_id+source_site+external_ref+:LABEL
+replicate_id:ID+source_id+bio_replicate_num:int+tech_replicate_num:int+:LABEL
+:START_ID+:END_ID+:TYPE
+project_id:ID+project_name+program_name+:LABEL
+:START_ID+:END_ID+:TYPE
+biosample_id:ID+source_id+type+tissue+cell+is_healthy:boolean+disease+:LABEL
+:START_ID+:END_ID+:TYPE
+donor_id:ID+source_id+species+age:int+gender+ethnicity+:LABEL
+:START_ID+onto_attribute+:END_ID+:TYPE
+tid:ID+source+code+pref_label+description+iri+:LABEL
+:START_ID+:END_ID+:TYPE
+source:ID+title+description+url+:LABEL
+:START_ID+:END_ID+:TYPE
+synonym_id:ID+label+:LABEL
+:START_ID+:END_ID+:TYPE
+reference_id:ID+source+code+:LABEL
+:START_ID+:END_ID+rel_type+:TYPE
+pair_id:ID+key+value+:LABEL
+:START_ID+:END_ID+:TYPE
+############################################################################## Fri Dec 28 19:41:15 UTC 2018 HEADERS CREATED
+############################################################################## Fri Dec 28 19:41:15 UTC 2018 PREPARED VARIABLE FOR PSQL
+COPY 242920
+COPY 242920
+COPY 242920
+COPY 242920
+COPY 262111
+COPY 150
+COPY 37
+COPY 27988
+COPY 142635
+COPY 27988
+COPY 40
+COPY 142635
+COPY 34873
+COPY 34873
+COPY 21186
+COPY 165998
+COPY 5204
+COPY 5204
+COPY 26
+COPY 22882
+COPY 22293
+COPY 6439
+COPY 6439
+COPY 7138
+COPY 45573315
+COPY 45573315
+############################################################################## Fri Dec 28 19:44:30 UTC 2018 EXPORTED NODES AND RELATIONSHIPS
+############################################################################## Fri Dec 28 19:44:31 UTC 2018 CONVERTED BOOLEAN VALUES
+############################################################################## Fri Dec 28 19:44:49 UTC 2018 ADDITIONAL CONVERSION FOR PAIRS DONE
+############################################################################## Fri Dec 28 19:44:49 UTC 2018 DELETED OLD GRAPH
+Neo4j not running
+############################################################################## Fri Dec 28 19:44:49 UTC 2018 STOPPED NEO4J IN CASE IT WAS RUNNING
+
+IMPORT DONE in 734ms. 
+Data statistics is not available.
+Peak memory usage: 0.00 B
+############################################################################## Fri Dec 28 19:45:22 UTC 2018 RE-START COMPLETED
