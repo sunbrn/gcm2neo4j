@@ -17,7 +17,7 @@
 --------CASE
 \copy (SELECT 'c'||case_study_id as case_study_id,case_source_id as case_study_source_id,source_site,external_ref, 'CaseStudy' as label FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case_study.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (case_study_source_id,source_site,external_ref));
 --------REPLICATE
-\copy (SELECT 'r'||replicate_id as replicate_id,replicate_source_id,bio_replicate_num,tech_replicate_num, 'Replicate' as label  FROM public.replicate) TO '../neo4j-community-3.4.1/import/gcm_entities/replicate.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (replicate_source_id));
+\copy (SELECT 'r'||replicate_id as replicate_id,replicate_source_id,bio_replicate_num,bio_replicate_num||'_'||tech_replicate_num, 'Replicate' as label  FROM public.replicate) TO '../neo4j-community-3.4.1/import/gcm_entities/replicate.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (replicate_source_id));
 --------CASE2PROJECT
 \copy (SELECT 'c'||case_study_id as case_study_id,'pr'||project_id as project_id, 'Case2Project' as label  FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case2project.csv' WITH (DELIMITER '+', FORMAT CSV);
 --------PROJECT
@@ -49,6 +49,6 @@
 -------RELATION_HAS_RELATIONSHIP
 \copy (select 'tid'||tid_child as tid_child,'tid'||tid_parent as tid_parent,rel_type,'HasRelationship' as label from public.relationship) TO '../neo4j-community-3.4.1/import/gcm_entities/has_relationship.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (rel_type));
 ------PAIRS
-\copy (select 'pa'||row_number() OVER () as pair_id,regexp_replace(key, E'@','_') as key, value,'Pair' as label from public.pair order by pair_id asc) TO '../neo4j-community-3.4.1/import/gcm_entities/pair_pre.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (key,value));
+\copy (select 'pa'||I.item_id||'_b' as pair_id, 'gcm_curated__biological_replicate_count' as key, CAST(count(distinct R.bio_replicate_num) as varchar) as value, 'Pair' as label from public.item I natural join replicate2item RI natural join replicate R group by I.item_id UNION ALL select 'pa'||I.item_id||'_t' as pair_id, 'gcm_curated__technical_replicate_count' as key, CAST(count(R.tech_replicate_num) as varchar) as value, 'Pair' as label from public.item I natural join replicate2item RI natural join replicate R group by I.item_id UNION ALL select 'pa'||row_number() OVER () as pair_id,regexp_replace(key, E'@','_') as key, value,'Pair' as label from public.pair order by pair_id asc) TO '../neo4j-community-3.4.1/import/gcm_entities/pair_pre.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (key,value));
 ------ITEM2PAIR
-\copy (select 'i'||item_id, 'pa'||row_number() OVER () as pair_id, 'Item2Pair' as label from public.pair) TO '../neo4j-community-3.4.1/import/gcm_entities/item2pair.csv' WITH (DELIMITER '+', FORMAT CSV);
+\copy (select 'i'||item_id as item_id,'pa'||I.item_id||'_b' as pair_id, 'Item2Pair' as label from public.item I UNION ALL select 'i'||item_id as item_id,'pa'||I.item_id||'_t' as pair_id, 'Item2Pair' as label from public.item I UNION ALL select 'i'||item_id as item_id,'pa'||row_number() OVER () as pair_id, 'Item2Pair' as label from public.pair) TO '../neo4j-community-3.4.1/import/gcm_entities/item2pair.csv' WITH (DELIMITER '+', FORMAT CSV);

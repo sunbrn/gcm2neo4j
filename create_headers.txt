@@ -8,7 +8,7 @@ echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/item2replicate_header
 echo "experiment_type_id:ID+technique+feature+target+antibody+:LABEL" | tee $1import/gcm_entities/experiment_type_header.csv;
 echo "dataset_id:ID+dataset_name+data_type+file_format+assembly+is_annotation:boolean+source+:LABEL" | tee $1import/gcm_entities/dataset_header.csv;
 echo "case_study_id:ID+source_id+source_site+external_reference+:LABEL" | tee $1import/gcm_entities/case_study_header.csv;
-echo "replicate_id:ID+source_id+biological_replicate_number:int+technical_replicate_number:int+:LABEL" | tee $1import/gcm_entities/replicate_header.csv;
+echo "replicate_id:ID+source_id+biological_replicate_number:int+technical_replicate_number+:LABEL" | tee $1import/gcm_entities/replicate_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/case2project_header.csv;
 echo "project_id:ID+project_name+source+:LABEL" | tee $1import/gcm_entities/project_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/replicate2biosample_header.csv;
