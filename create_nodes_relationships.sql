@@ -7,7 +7,7 @@
 --------ITEM2DATASET
 \copy (SELECT 'i'||item_id as item_id,'da'||dataset_id as dataset_id, 'Item2Dataset' as label FROM public.item) TO '../neo4j-community-3.4.1/import/gcm_entities/item2dataset.csv' WITH (DELIMITER '+', FORMAT CSV);
 --------ITEM2CASE
-\copy (SELECT 'i'||item_id as item_id,'c'||case_id as case_id, 'Item2Case' as label FROM public.case2item) TO '../neo4j-community-3.4.1/import/gcm_entities/item2case.csv' WITH (DELIMITER '+', FORMAT CSV);
+\copy (SELECT 'i'||item_id as item_id,'c'||case_id as case_study_id, 'Item2Case' as label FROM public.case2item) TO '../neo4j-community-3.4.1/import/gcm_entities/item2case.csv' WITH (DELIMITER '+', FORMAT CSV);
 --------ITEM2REPLICATE
 \copy (SELECT 'i'||item_id as item_id,'r'||replicate_id as replicate_id, 'Item2Replicate' as label FROM public.replicate2item) TO '../neo4j-community-3.4.1/import/gcm_entities/item2replicate.csv' WITH (DELIMITER '+', FORMAT CSV);
 --------EXPERIMENTTYPE
@@ -15,11 +15,11 @@
 --------DATASET
 \copy (SELECT 'da'||dataset_id as dataset_id,regexp_replace(name, E'\\n','') as name,data_type,format,assembly,is_ann,CASE WHEN name ilike '%GENCODE%' THEN 'GENCODE' WHEN name ilike '%REFSEQ%' THEN 'REFSEQ' WHEN name ilike '%CISTROME%' THEN 'CISTROME' WHEN name ilike '%\_ENCODE%' THEN 'ENCODE' WHEN name ilike 'GRCh38_TCGA%' THEN 'GDC' WHEN name ilike '%ROADMAP_EPIGENOMICS%' THEN 'ROADMAP_EPIGENOMICS' WHEN name ilike '%TAD%' THEN ' TAD'WHEN name ilike 'HG19_TCGA%' THEN 'TCGA' ELSE 'other' END as source, 'Dataset' as label  FROM public.dataset) TO '../neo4j-community-3.4.1/import/gcm_entities/dataset.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (name, data_type,format,assembly,source));
 --------CASE
-\copy (SELECT 'c'||case_study_id as case_id,case_source_id,source_site,external_ref, 'Case' as label  FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (case_source_id,source_site,external_ref));
+\copy (SELECT 'c'||case_study_id as case_study_id,case_source_id as case_study_source_id,source_site,external_ref, 'CaseStudy' as label FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case_study.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (case_study_source_id,source_site,external_ref));
 --------REPLICATE
 \copy (SELECT 'r'||replicate_id as replicate_id,replicate_source_id,bio_replicate_num,tech_replicate_num, 'Replicate' as label  FROM public.replicate) TO '../neo4j-community-3.4.1/import/gcm_entities/replicate.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (replicate_source_id));
 --------CASE2PROJECT
-\copy (SELECT 'c'||case_study_id as case_id,'pr'||project_id as project_id, 'Case2Project' as label  FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case2project.csv' WITH (DELIMITER '+', FORMAT CSV);
+\copy (SELECT 'c'||case_study_id as case_study_id,'pr'||project_id as project_id, 'Case2Project' as label  FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case2project.csv' WITH (DELIMITER '+', FORMAT CSV);
 --------PROJECT
 \copy (SELECT 'pr'||project_id,project_name,program_name, 'Project' as label  FROM public.project) TO '../neo4j-community-3.4.1/import/gcm_entities/project.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (project_name,program_name));
 --------REPLICATE2BIOSAMPLE
@@ -41,7 +41,7 @@
 -------RELATION_HAS_SYNONYM
 \copy (SELECT 'tid'||tid as tid,'s'||synonym_id as synonym_id,'HasSynonym' as label FROM public.synonym) TO '../neo4j-community-3.4.1/import/gcm_entities/has_synonym.csv' WITH (DELIMITER '+', FORMAT CSV);
 -------SYNONYM
-\copy (SELECT 's'||synonym_id as synonym_id,label,'Synonym' as label FROM public.synonym where type not ilike 'related') TO '../neo4j-community-3.4.1/import/gcm_entities/synonym.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (label));
+\copy (SELECT 's'||synonym_id as synonym_id,label,'Synonym' as label FROM public.synonym where type not ilike 'related' and type not ilike 'raw') TO '../neo4j-community-3.4.1/import/gcm_entities/synonym.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (label));
 -------RELATION_HAS_REFERENCE
 \copy (SELECT 'tid'||tid as tid,'x'||reference_id as reference_id,'HasXRef' as label FROM public.reference) TO '../neo4j-community-3.4.1/import/gcm_entities/has_reference.csv' WITH (DELIMITER '+', FORMAT CSV);
 -------REFERENCE
