@@ -49,4 +49,4 @@
 ------PAIRS
 \copy (select 'pa'||row_number() OVER () as pair_id,regexp_replace(key, E'@','_') as key, value,'Pair' as label from public.pair order by pair_id asc) TO '../neo4j-community-3.4.1/import/gcm_entities/pair_pre.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (key,value));
 ------ITEM2PAIR
-\copy (select 'i'||item_id as item_id,'pa'||I.item_id||'_b' as pair_id, 'Item2Pair' as label from public.item I UNION ALL select 'i'||item_id as item_id,'pa'||I.item_id||'_t' as pair_id, 'Item2Pair' as label from public.item I UNION ALL select 'i'||item_id as item_id,'pa'||row_number() OVER () as pair_id, 'Item2Pair' as label from public.pair) TO '../neo4j-community-3.4.1/import/gcm_entities/item2pair.csv' WITH (DELIMITER '+', FORMAT CSV);
+\copy (select 'i'||item_id as item_id,'pa'||row_number() OVER () as pair_id, 'Item2Pair' as label from public.pair) TO '../neo4j-community-3.4.1/import/gcm_entities/item2pair.csv' WITH (DELIMITER '+', FORMAT CSV);
