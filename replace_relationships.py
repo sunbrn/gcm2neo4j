@@ -18,7 +18,7 @@ for s in sources_without_replicate:
                          "p2=(i:Item)--(r:Replicate), " \
                          "p3=(r:Replicate)--(b:Biosample), " \
                          "p4=(b:Biosample)--(d:Donor) " \
-                         "WHERE p.program_name='" + s + "' " \
+                         "WHERE p.source='" + s + "' " \
                          "CREATE (i)-[re:Item2Biosample]->(b)"
 
     tx.append(create_rel)
@@ -28,7 +28,7 @@ for s in sources_without_replicate:
                  "p2=(i:Item)--(r:Replicate), " \
                  "p3=(r:Replicate)--(b:Biosample), " \
                  "p4=(b:Biosample)--(d:Donor) " \
-                 "WHERE p.program_name='" + s + "' " \
+                 "WHERE p.source='" + s + "' " \
                  "DETACH DELETE r"
 
     tx.append(delete_rel)
@@ -40,7 +40,7 @@ tx.commit()
 #    create_rel = "MATCH " \
 #                         "p1=(i:Item)--(c:Case), " \
 #                         "p2=(c:Case)--(p:Project) " \
-#                         "WHERE p.program_name='" + s + "' " \
+#                         "WHERE p.source='" + s + "' " \
 #                         "CREATE (i)-[re:Item2Project]->(p)"
 #
 #    tx.append(create_rel)
@@ -48,7 +48,7 @@ tx.commit()
 #   create_rel = "MATCH " \
 #                         "p1=(i:Item)--(c:Case), " \
 #                         "p2=(c:Case)--(p:Project) " \
-#                         "WHERE p.program_name='" + s + "' " \
+#                         "WHERE p.source='" + s + "' " \
 #                         "DETACH DELETE c"
 #
 #    tx.append(create_rel)
@@ -63,7 +63,7 @@ tx.commit()
 #                         "p2=(i:Item)--(r:Replicate), " \
 #                         "p3=(r:Replicate)--(b:Biosample), " \
 #                         "p4=(b:Biosample)--(d:Donor) " \
-#                         "WHERE p.program_name='" + s + "' " \
+#                         "WHERE p.source='" + s + "' " \
 #                         "CREATE (i)-[re:Item2Donor]->(d)"
 #
 #    tx.append(create_rel)
@@ -73,7 +73,7 @@ tx.commit()
 #                 "p2=(i:Item)--(r:Replicate), " \
 #                 "p3=(r:Replicate)--(b:Biosample), " \
 #                 "p4=(b:Biosample)--(d:Donor) " \
-#                 "WHERE p.program_name='" + s + "' " \
+#                 "WHERE p.source='" + s + "' " \
 #                 "DETACH DELETE r,b"
 #
 #    tx.append(delete_rel)
