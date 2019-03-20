@@ -15,7 +15,7 @@
 --------CASE
 \copy (SELECT 'c'||case_study_id as case_study_id,case_source_id as case_study_source_id,source_site,external_reference, 'CaseStudy' as label FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case_study.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (case_study_source_id,source_site,external_reference));
 --------REPLICATE
-\copy (SELECT 'r'||replicate_id as replicate_id,replicate_source_id,biological_replicate_number,biological_replicate_number||'_'||technical_replicate_numbee, 'Replicate' as label  FROM public.replicate) TO '../neo4j-community-3.4.1/import/gcm_entities/replicate.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (replicate_source_id));
+\copy (SELECT 'r'||replicate_id as replicate_id,replicate_source_id,biological_replicate_number,biological_replicate_number||'_'||technical_replicate_number, 'Replicate' as label  FROM public.replicate) TO '../neo4j-community-3.4.1/import/gcm_entities/replicate.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (replicate_source_id));
 --------CASE2PROJECT
 \copy (SELECT 'c'||case_study_id as case_study_id,'pr'||project_id as project_id, 'Case2Project' as label  FROM public.case_study) TO '../neo4j-community-3.4.1/import/gcm_entities/case2project.csv' WITH (DELIMITER '+', FORMAT CSV);
 --------PROJECT
