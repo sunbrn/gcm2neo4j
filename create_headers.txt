@@ -19,7 +19,7 @@ echo ":START_ID+onto_attribute+:END_ID+:TYPE" | tee $1import/gcm_entities/has_ti
 echo "tid:ID+source+code+pref_label+description+iri+:LABEL" | tee $1import/gcm_entities/vocabulary_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/from_ontology_header.csv;
 echo "source:ID+title+description+url+:LABEL" | tee $1import/gcm_entities/ontology_header.csv;
-echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/has_synonym_header.csv;
+echo ":START_ID+synonym_type+:END_ID+:TYPE" | tee $1import/gcm_entities/has_synonym_header.csv;
 echo "synonym_id:ID+label+:LABEL" | tee $1import/gcm_entities/synonym_header.csv;
 echo ":START_ID+:END_ID+:TYPE" | tee $1import/gcm_entities/has_reference_header.csv;
 echo "reference_id:ID+source+code+:LABEL" | tee $1import/gcm_entities/reference_header.csv;

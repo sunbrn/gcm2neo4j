@@ -37,9 +37,9 @@
 -------ONTOLOGY
 \copy (SELECT source,title,description,url,'Ontology' as label FROM public.ontology) TO '../neo4j-community-3.4.1/import/gcm_entities/ontology.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (title,description,url));
 -------RELATION_HAS_SYNONYM
-\copy (SELECT 'tid'||tid as tid,'s'||synonym_id as synonym_id,'HasSynonym' as label FROM public.synonym) TO '../neo4j-community-3.4.1/import/gcm_entities/has_synonym.csv' WITH (DELIMITER '+', FORMAT CSV);
+\copy (SELECT 'tid'||tid as tid,type,'s'||synonym_id as synonym_id,'HasSynonym' as label FROM public.synonym where type not ilike 'raw' and type not ilike 'pref') TO '../neo4j-community-3.4.1/import/gcm_entities/has_synonym.csv' WITH (DELIMITER '+', FORMAT CSV);
 -------SYNONYM
-\copy (SELECT 's'||synonym_id as synonym_id,label,'Synonym' as label FROM public.synonym where type not ilike 'related' and type not ilike 'raw') TO '../neo4j-community-3.4.1/import/gcm_entities/synonym.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (label));
+\copy (SELECT 's'||synonym_id as synonym_id,label,'Synonym' as label FROM public.synonym where type not ilike 'raw' and type not ilike 'pref') TO '../neo4j-community-3.4.1/import/gcm_entities/synonym.csv' WITH (DELIMITER '+', FORMAT CSV, FORCE_QUOTE (label));
 -------RELATION_HAS_REFERENCE
 \copy (SELECT 'tid'||tid as tid,'x'||reference_id as reference_id,'HasXRef' as label FROM public.reference) TO '../neo4j-community-3.4.1/import/gcm_entities/has_reference.csv' WITH (DELIMITER '+', FORMAT CSV);
 -------REFERENCE

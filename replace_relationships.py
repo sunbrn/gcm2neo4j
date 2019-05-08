@@ -2,7 +2,7 @@ from neo4jrestclient.client import GraphDatabase
 
 import sys
 
-connection_string = "http://neo4j:"+ sys.argv[1] + "@geco.deib.polimi.it:7474/db/data/"
+connection_string = "http://neo4j:"+ sys.argv[1] + "@geco.deib.polimi.it:27474/db/data/"
 graph = GraphDatabase(connection_string)
 tx = graph.transaction(for_query=True)
 
